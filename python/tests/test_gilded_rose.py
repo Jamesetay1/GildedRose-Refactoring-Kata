@@ -54,12 +54,35 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(1, items[0].sell_in)
         self.assertEqual(50, items[0].quality)
 
-    # Test that Sulfuras never changes in quality or sell_in
+    # Test that Sulfuras never changes in quality or sell_in (sell_in = 0)
     def test_sulfuras_never_changes(self):
         items = [Item("Sulfuras, Hand of Ragnaros", 0, 80)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
         self.assertEqual(0, items[0].sell_in)
+        self.assertEqual(80, items[0].quality)
+
+    # Test that Sulfuras never changes in quality or sell_in (sell_in > 0)
+    def test_sulfuras_never_changes_positive_sell_in(self):
+        items = [Item("Sulfuras, Hand of Ragnaros", 5, 80)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual(5, items[0].sell_in)
+        self.assertEqual(80, items[0].quality)
+
+    # Test that Sulfuras never changes in quality or sell_in (sell_in < 0)
+    def test_sulfuras_never_changes_negative_sell_in(self):
+        items = [Item("Sulfuras, Hand of Ragnaros", -1, 80)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual(-1, items[0].sell_in)
+        self.assertEqual(80, items[0].quality)
+
+    # Test that Sulfuras always has quality 80, even if initialized with a different value
+    def test_sulfuras_quality_always_80(self):
+        items = [Item("Sulfuras, Hand of Ragnaros", 0, 70)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
         self.assertEqual(80, items[0].quality)
 
     # Test that Backstage passes increase in quality as sell_in approaches
